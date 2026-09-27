@@ -1,0 +1,20 @@
+* {
+  font-family: "JetBrains Mono", "DejaVu Sans Mono", monospace;
+  font-size: 13px;
+  border: none;
+  border-radius: 0;
+  min-height: 0;
+}
+window#waybar { background: #0b0906; color: #ffb000; border-top: 1px solid #221b10; }
+#window, #clock { color: #b07a00; padding: 0 8px; }
+#custom-emcon, #custom-mesh, #custom-gps, #custom-ssd, #wireplumber, #custom-temp, #custom-power {
+  padding: 0 8px;
+  color: #ffb000;
+}
+#custom-emcon.silent { color: #6fdc6f; }
+#custom-emcon.transmitting { color: #0b0906; background: #ff4a3d; font-weight: bold; }
+#custom-mesh.unread { color: #0b0906; background: #ffb000; }
+#custom-mesh.absent, #custom-gps.nofix, #custom-ssd.absent { color: #6b5220; }
+#custom-temp.hot { color: #ff4a3d; }
+#custom-power.brownout { color: #0b0906; background: #ff4a3d; }
+#custom-power.field { color: #6fdc6f; }

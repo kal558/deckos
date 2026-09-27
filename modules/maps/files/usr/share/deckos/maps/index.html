@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Maps</title>
+<link rel="stylesheet" href="vendor/maplibre-gl.css">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<div id="map"></div>
+
+<div id="panel">
+  <input id="q" type="search" placeholder="Search places, postcodes…  ( / )" autocomplete="off">
+  <div id="results"></div>
+  <div id="toolbar">
+    <button id="me" title="Centre on my position (c)">⌖ Me</button>
+    <button id="route" title="Route from me to the selected place (r)">⇢ Route</button>
+    <select id="mode" title="Travel mode">
+      <option value="pedestrian">Walk</option>
+      <option value="bicycle">Cycle</option>
+      <option value="auto">Drive</option>
+    </select>
+    <button id="pin" title="Drop a waypoint (w)">＋ Waypoint</button>
+  </div>
+  <div id="layers">
+    <label><input type="checkbox" id="l-mesh" checked> Mesh</label>
+    <label><input type="checkbox" id="l-wiki"> Wikipedia nearby</label>
+    <label><input type="checkbox" id="l-ft8"> FT8 spots</label>
+  </div>
+  <div id="info"></div>
+</div>
+<div id="status"></div>
+
+<script src="vendor/maplibre-gl.js"></script>
+<script src="vendor/pmtiles.js"></script>
+<script src="vendor/basemaps.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

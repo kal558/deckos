@@ -1,0 +1,53 @@
+{
+  "policies": {
+    "DisableTelemetry": true,
+    "DisableFirefoxStudies": true,
+    "DisablePocket": true,
+    "DisableFirefoxAccounts": true,
+    "DisableFeedbackCommands": true,
+    "DisableAppUpdate": true,
+    "DisableSetDesktopBackground": true,
+    "DontCheckDefaultBrowser": true,
+    "NetworkPrediction": false,
+    "CaptivePortal": false,
+    "DNSOverHTTPS": { "Enabled": false, "Locked": true },
+    "SearchSuggestEnabled": false,
+    "OfferToSaveLogins": false,
+    "PasswordManagerEnabled": false,
+    "HttpsOnlyMode": "force_enabled",
+    "PrimaryPassword": false,
+    "EnableTrackingProtection": {
+      "Value": true, "Locked": true, "Cryptomining": true, "Fingerprinting": true, "EmailTracking": true
+    },
+    "FirefoxHome": {
+      "Search": true, "TopSites": false, "SponsoredTopSites": false, "Highlights": false,
+      "Pocket": false, "SponsoredPocket": false, "Snippets": false, "Locked": true
+    },
+    "FirefoxSuggest": { "WebSuggestions": false, "SponsoredSuggestions": false, "ImproveSuggest": false, "Locked": true },
+    "UserMessaging": {
+      "ExtensionRecommendations": false, "FeatureRecommendations": false, "UrlbarInterventions": false,
+      "SkipOnboarding": true, "MoreFromMozilla": false, "Locked": true
+    },
+    "SanitizeOnShutdown": {
+      "Cache": true, "Cookies": true, "History": true, "Sessions": true, "FormData": true, "Downloads": true, "Locked": false
+    },
+    "Homepage": { "URL": "about:blank", "StartPage": "homepage" },
+    "Preferences": {
+      "browser.safebrowsing.malware.enabled": { "Value": false, "Status": "locked" },
+      "browser.safebrowsing.phishing.enabled": { "Value": false, "Status": "locked" },
+      "browser.safebrowsing.downloads.enabled": { "Value": false, "Status": "locked" },
+      "network.connectivity-service.enabled": { "Value": false, "Status": "locked" },
+      "network.captive-portal-service.enabled": { "Value": false, "Status": "locked" },
+      "media.peerconnection.enabled": { "Value": false, "Status": "locked" },
+      "geo.enabled": { "Value": false, "Status": "locked" },
+      "browser.discovery.enabled": { "Value": false, "Status": "locked" },
+      "app.normandy.enabled": { "Value": false, "Status": "locked" },
+      "extensions.getAddons.cache.enabled": { "Value": false, "Status": "locked" },
+      "browser.urlbar.speculativeConnect.enabled": { "Value": false, "Status": "locked" },
+      "network.prefetch-next": { "Value": false, "Status": "locked" },
+      "browser.tabs.unloadOnLowMemory": { "Value": true, "Status": "default" },
+      "browser.sessionstore.resume_from_crash": { "Value": false, "Status": "default" },
+      "extensions.autoDisableScopes": { "Value": 0, "Status": "default" }
+    }
+  }
+}

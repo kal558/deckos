@@ -1,0 +1,5 @@
+# deckOS: gpsd finds USB GPS receivers by hotplug and listens on localhost only
+START_DAEMON="true"
+USBAUTO="true"
+DEVICES="/dev/gps0"
+GPSD_OPTIONS="-n"

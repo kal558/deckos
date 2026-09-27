@@ -1,0 +1,28 @@
+:root {
+  --bg: #0b0906; --panel: #16120be6; --fg: #ffb000; --dim: #b07a00; --line: #6b5220; --bad: #ff4a3d;
+}
+body.day { --bg: #fff; --panel: #ffffffee; --fg: #000; --dim: #333; --line: #777; --bad: #b00000; }
+html, body { margin: 0; height: 100%; background: var(--bg); color: var(--fg);
+  font: 15px/1.4 "JetBrains Mono", "DejaVu Sans Mono", monospace; }
+#map { position: absolute; inset: 0; }
+#panel { position: absolute; top: 10px; left: 10px; width: min(380px, calc(100% - 20px));
+  background: var(--panel); border: 1px solid var(--line); padding: 8px; z-index: 2; }
+#q { width: 100%; box-sizing: border-box; background: var(--bg); color: var(--fg);
+  border: 1px solid var(--line); padding: 8px; font: inherit; }
+#q:focus { outline: 1px solid var(--fg); }
+#results div { padding: 5px 6px; cursor: pointer; border-bottom: 1px solid var(--line); }
+#results div.sel, #results div:hover { background: var(--line); }
+#results small { color: var(--dim); }
+#toolbar, #layers { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+button, select { background: var(--bg); color: var(--fg); border: 1px solid var(--line);
+  padding: 5px 8px; font: inherit; cursor: pointer; }
+button:hover, button:focus, button.on { border-color: var(--fg); }
+#layers label { color: var(--dim); }
+#info { margin-top: 8px; color: var(--dim); max-height: 35vh; overflow: auto; }
+#info b { color: var(--fg); }
+#status { position: absolute; bottom: 8px; left: 10px; background: var(--panel); padding: 3px 8px;
+  border: 1px solid var(--line); color: var(--dim); z-index: 2; }
+.maplibregl-popup-content { background: var(--bg); color: var(--fg); border: 1px solid var(--fg); }
+.maplibregl-popup-content a { color: var(--fg); }
+.maplibregl-ctrl-attrib { background: var(--panel) !important; }
+.maplibregl-ctrl-attrib a { color: var(--dim) !important; }

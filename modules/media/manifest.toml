@@ -1,0 +1,9 @@
+[[app]]
+id = "media"
+name = "Media"
+icon = "applications-multimedia-symbolic"
+command = ["deck-kodi"]
+requires = ["ssd"]
+heavy = true
+order = 50
+description = "Films, music, photos, TV recordings, satellite images"

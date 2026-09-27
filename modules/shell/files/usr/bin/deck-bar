@@ -1,0 +1,2 @@
+#!/bin/sh
+exec waybar -c /etc/xdg/waybar/config.jsonc -s /etc/xdg/waybar/style.css "$@"

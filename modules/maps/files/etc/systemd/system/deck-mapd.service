@@ -1,0 +1,16 @@
+[Unit]
+Description=deckOS offline map server (this deck only)
+After=network.target deck.mount
+
+[Service]
+User=deck
+Group=deck
+ExecStart=/usr/bin/deck-mapd
+Restart=on-failure
+RestartSec=5
+Nice=5
+NoNewPrivileges=yes
+PrivateTmp=yes
+
+[Install]
+WantedBy=multi-user.target

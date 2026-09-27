@@ -1,0 +1,258 @@
+# Content the Library Manager knows how to fetch.
+# kind = "zim"      -> resolved by name in the Kiwix OPDS catalogue (latest version)
+# kind = "pmtiles"  -> region extracted from the latest Protomaps planet build
+# kind = "prebuilt" -> built on a PC with tools/build-map-data.sh, then imported
+# size_gb is approximate and only used for planning.
+# Names change occasionally; unknown names are reported, not fatal. Browse
+# https://library.kiwix.org to find others and add them here.
+
+# ---------------------------------------------------------------- Wikipedia
+[[item]]
+id = "wikipedia"
+title = "Wikipedia (English, text only)"
+kind = "zim"
+name = "wikipedia_en_all_nopic"
+group = "Wikipedia"
+size_gb = 55
+default = true
+
+[[item]]
+id = "wikipedia-maxi"
+title = "Wikipedia (English, with images) — replaces the text-only version"
+kind = "zim"
+name = "wikipedia_en_all_maxi"
+group = "Wikipedia"
+size_gb = 115
+default = false
+replaces = "wikipedia"
+
+# ---------------------------------------------------------------- Medical
+[[item]]
+id = "wikimed"
+title = "WikiMed (medical Wikipedia, with images)"
+kind = "zim"
+name = "wikipedia_en_medicine_maxi"
+group = "Medical"
+size_gb = 2.5
+default = true
+
+[[item]]
+id = "mdwiki"
+title = "MDWiki (WikiProjectMed)"
+kind = "zim"
+name = "mdwiki_en_all_maxi"
+group = "Medical"
+size_gb = 1.5
+default = true
+
+[[item]]
+id = "military-medicine"
+title = "Military medicine field manuals"
+kind = "zim"
+name = "fas-military-medicine_en"
+group = "Medical"
+size_gb = 0.1
+default = true
+
+[[item]]
+id = "zimgit-medicine"
+title = "Medicine library (zimgit)"
+kind = "zim"
+name = "zimgit-medicine_en"
+group = "Medical"
+size_gb = 0.1
+default = true
+
+# ---------------------------------------------------------------- Practical
+[[item]]
+id = "ifixit"
+title = "iFixit repair guides"
+kind = "zim"
+name = "ifixit_en_all"
+group = "Practical"
+size_gb = 3.5
+default = true
+
+[[item]]
+id = "wikivoyage"
+title = "Wikivoyage travel guides"
+kind = "zim"
+name = "wikivoyage_en_all_maxi"
+group = "Practical"
+size_gb = 1.0
+default = true
+
+[[item]]
+id = "wikibooks"
+title = "Wikibooks"
+kind = "zim"
+name = "wikibooks_en_all_maxi"
+group = "Practical"
+size_gb = 5.0
+default = true
+
+[[item]]
+id = "appropedia"
+title = "Appropedia (sustainability, water, building, farming)"
+kind = "zim"
+name = "appropedia_en_all_maxi"
+group = "Practical"
+size_gb = 0.6
+default = true
+
+[[item]]
+id = "post-disaster"
+title = "Post-disaster resources"
+kind = "zim"
+name = "zimgit-post-disaster_en"
+group = "Practical"
+size_gb = 0.7
+default = true
+
+[[item]]
+id = "water"
+title = "Water treatment library"
+kind = "zim"
+name = "zimgit-water_en"
+group = "Practical"
+size_gb = 0.1
+default = true
+
+[[item]]
+id = "food-preparation"
+title = "Food preparation & preservation"
+kind = "zim"
+name = "zimgit-food-preparation_en"
+group = "Practical"
+size_gb = 0.1
+default = true
+
+[[item]]
+id = "knots"
+title = "Knots"
+kind = "zim"
+name = "zimgit-knots_en"
+group = "Practical"
+size_gb = 0.1
+default = true
+
+[[item]]
+id = "se-outdoors"
+title = "Great Outdoors Q&A (Stack Exchange)"
+kind = "zim"
+name = "outdoors.stackexchange.com_en_all"
+group = "Practical"
+size_gb = 0.2
+default = true
+
+[[item]]
+id = "se-gardening"
+title = "Gardening Q&A (Stack Exchange)"
+kind = "zim"
+name = "gardening.stackexchange.com_en_all"
+group = "Practical"
+size_gb = 0.4
+default = true
+
+[[item]]
+id = "se-diy"
+title = "DIY & home improvement Q&A (Stack Exchange)"
+kind = "zim"
+name = "diy.stackexchange.com_en_all"
+group = "Practical"
+size_gb = 1.8
+default = true
+
+# ---------------------------------------------------------------- Reference
+[[item]]
+id = "wiktionary"
+title = "Wiktionary (English)"
+kind = "zim"
+name = "wiktionary_en_all_nopic"
+group = "Reference"
+size_gb = 5.0
+default = true
+
+[[item]]
+id = "se-electronics"
+title = "Electronics Q&A (Stack Exchange)"
+kind = "zim"
+name = "electronics.stackexchange.com_en_all"
+group = "Reference"
+size_gb = 3.5
+default = true
+
+[[item]]
+id = "se-ham"
+title = "Amateur Radio Q&A (Stack Exchange)"
+kind = "zim"
+name = "ham.stackexchange.com_en_all"
+group = "Reference"
+size_gb = 0.1
+default = true
+
+[[item]]
+id = "se-cooking"
+title = "Cooking Q&A (Stack Exchange)"
+kind = "zim"
+name = "cooking.stackexchange.com_en_all"
+group = "Reference"
+size_gb = 0.6
+default = true
+
+[[item]]
+id = "wikiquote"
+title = "Wikiquote"
+kind = "zim"
+name = "wikiquote_en_all_maxi"
+group = "Reference"
+size_gb = 0.9
+default = false
+
+[[item]]
+id = "gutenberg"
+title = "Project Gutenberg (all English books — very large)"
+kind = "zim"
+name = "gutenberg_en_all"
+group = "Reference"
+size_gb = 75
+default = false
+
+# ---------------------------------------------------------------- Maps
+[[item]]
+id = "map-uk"
+title = "Map: UK & Ireland (street level)"
+kind = "pmtiles"
+bbox = [-10.7, 49.8, 1.9, 60.9]
+maxzoom = 15
+group = "Maps"
+size_gb = 4
+default = true
+
+[[item]]
+id = "map-europe-west"
+title = "Map: Western Europe (town level)"
+kind = "pmtiles"
+bbox = [-11.0, 35.5, 19.0, 61.0]
+maxzoom = 12
+group = "Maps"
+size_gb = 5
+default = true
+
+[[item]]
+id = "places"
+title = "Place & address search index"
+kind = "prebuilt"
+file = "places/places.sqlite"
+group = "Maps"
+size_gb = 3
+default = true
+
+[[item]]
+id = "routing"
+title = "Offline routing (Valhalla tiles)"
+kind = "prebuilt"
+file = "valhalla/valhalla_tiles.tar"
+group = "Maps"
+size_gb = 3
+default = true

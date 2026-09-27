@@ -1,0 +1,27 @@
+#!/bin/sh
+# Screen-off, standby and lock timings, following the power profile's timeout
+# (/run/deckos/dpms-timeout, written by deck-power). Restarts swayidle when the
+# profile changes. "deck-power standby" sends swayidle SIGUSR1 to idle at once.
+TIMEOUT_FILE=/run/deckos/dpms-timeout
+
+start() {
+  T=$(cat "$TIMEOUT_FILE" 2>/dev/null || echo 300)
+  swayidle -w \
+    timeout "$T" 'swaymsg "output * power off"; sudo -n /usr/bin/deck-power idle on' \
+      resume 'swaymsg "output * power on"; sudo -n /usr/bin/deck-power idle off' \
+    timeout "$((T + 1))" 'swaylock -f' \
+    before-sleep 'swaylock -f' &
+  PID=$!
+  LAST=$T
+}
+
+trap 'kill $PID 2>/dev/null; exit 0' INT TERM
+start
+while sleep 30; do
+  T=$(cat "$TIMEOUT_FILE" 2>/dev/null || echo 300)
+  if [ "$T" != "$LAST" ] || ! kill -0 "$PID" 2>/dev/null; then
+    kill "$PID" 2>/dev/null
+    wait "$PID" 2>/dev/null
+    start
+  fi
+done

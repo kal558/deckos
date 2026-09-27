@@ -1,0 +1,14 @@
+sway
+swayidle
+swaylock
+waybar
+foot
+mako-notifier
+wl-clipboard
+grim
+xwayland
+xdg-utils
+adwaita-icon-theme
+gir1.2-gtk-4.0
+python3-gi
+dbus-user-session

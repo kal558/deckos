@@ -1,0 +1,48 @@
+# Core system
+sudo
+locales
+tzdata
+initramfs-tools
+cryptsetup
+cryptsetup-initramfs
+parted
+fdisk
+rsync
+curl
+ca-certificates
+aria2
+xz-utils
+unzip
+jq
+libnotify-bin
+
+# Networking and radios (off at boot; EMCON switches them)
+network-manager
+systemd-resolved
+nftables
+rfkill
+iw
+wireless-regdb
+bluez
+
+# Time and position without internet
+chrony
+gpsd
+gpsd-clients
+
+# Memory
+zram-tools
+
+# Audio and video
+pipewire
+pipewire-pulse
+pipewire-alsa
+wireplumber
+pulseaudio-utils
+alsa-utils
+ffmpeg
+mpv
+
+# Fonts
+fonts-dejavu-core
+fonts-jetbrains-mono

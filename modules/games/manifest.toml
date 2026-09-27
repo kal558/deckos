@@ -1,0 +1,25 @@
+[[app]]
+id = "games"
+name = "Games"
+icon = "input-gaming-symbolic"
+command = ["deck-games"]
+requires = ["ssd"]
+heavy = true
+order = 55
+description = "Retro consoles up to PS1 (N64, PSP, Dreamcast for lighter titles). Add ROMs to /deck/games/roms"
+
+[[app]]
+id = "openttd"
+name = "OpenTTD"
+icon = "applications-games-symbolic"
+command = ["openttd"]
+order = 56
+description = "Transport tycoon strategy game"
+
+[[app]]
+id = "freeciv"
+name = "Freeciv"
+icon = "applications-games-symbolic"
+command = ["freeciv-gtk3.22"]
+order = 57
+description = "Civilization-style strategy game"

@@ -1,0 +1,6 @@
+#!/bin/sh
+# Game library: ES-DE if it was installed, otherwise RetroArch's own menu.
+if [ -x /opt/es-de/AppRun ]; then
+  exec /opt/es-de/AppRun --home /home/deck
+fi
+exec retroarch

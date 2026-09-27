@@ -1,0 +1,2 @@
+# Start tvheadend while a DVB tuner is present
+SUBSYSTEM=="dvb", KERNEL=="dvb*.frontend*", TAG+="systemd", ENV{SYSTEMD_WANTS}+="tvheadend.service"

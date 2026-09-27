@@ -1,0 +1,21 @@
+[Unit]
+Description=Kiwix offline library server (this deck only)
+After=deck.mount
+BindsTo=deck.mount
+ConditionPathIsDirectory=/deck/library
+
+[Service]
+User=deck
+Group=deck
+ExecStartPre=/usr/bin/deck-library rebuild
+ExecStart=/usr/bin/kiwix-serve --address=127.0.0.1 --port=8080 --library --monitorLibrary /deck/library/library.xml
+Restart=on-failure
+RestartSec=5
+Nice=5
+ProtectSystem=strict
+ReadWritePaths=/deck/library
+PrivateTmp=yes
+NoNewPrivileges=yes
+
+[Install]
+WantedBy=multi-user.target deck.mount

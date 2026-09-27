@@ -1,0 +1,12 @@
+#!/bin/sh
+# ⊞+D: flip between the amber night theme and high-contrast daylight mode.
+# deckOS apps watch the theme file and restyle within a couple of seconds.
+python_state=$(/opt/deckos/venv/bin/python -c 'from deckos import paths; print(paths.user_state())')
+f="$python_state/theme"
+if [ "$(cat "$f" 2>/dev/null)" = "day" ]; then
+  echo night > "$f"
+  notify-send -a deckOS "Night mode"
+else
+  echo day > "$f"
+  notify-send -a deckOS "Daylight mode"
+fi

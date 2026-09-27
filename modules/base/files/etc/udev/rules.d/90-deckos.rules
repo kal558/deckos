@@ -1,0 +1,5 @@
+# Mount the DECKDATA SSD whenever it's plugged in (not just at boot)
+SUBSYSTEM=="block", ENV{ID_FS_LABEL}=="DECKDATA", TAG+="systemd", ENV{SYSTEMD_WANTS}+="deck.mount"
+
+# Stable name for u-blox GPS receivers
+SUBSYSTEM=="tty", ATTRS{idVendor}=="1546", SYMLINK+="gps0", TAG+="systemd", ENV{SYSTEMD_WANTS}+="gpsd.service"

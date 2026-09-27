@@ -1,0 +1,54 @@
+tab = "HF voice (SSB)"
+section = "DX"
+mode = "auto-ssb"   # LSB below 10 MHz, USB above (amateur convention)
+note = "Amateur HF voice. The presets are the IARU Region 1 emergency centres of activity."
+
+[[band]]
+name = "80 m"
+start = 3.600e6
+end = 3.800e6
+step = 1e3
+
+[[band]]
+name = "40 m"
+start = 7.060e6
+end = 7.200e6
+step = 1e3
+
+[[band]]
+name = "20 m"
+start = 14.100e6
+end = 14.350e6
+step = 1e3
+
+[[band]]
+name = "17 m"
+start = 18.110e6
+end = 18.168e6
+step = 1e3
+
+[[band]]
+name = "15 m"
+start = 21.150e6
+end = 21.450e6
+step = 1e3
+
+[[preset]]
+name = "80 m emergency CoA"
+freq = 3.760e6
+
+[[preset]]
+name = "40 m emergency CoA"
+freq = 7.110e6
+
+[[preset]]
+name = "20 m emergency CoA"
+freq = 14.300e6
+
+[[preset]]
+name = "17 m emergency CoA"
+freq = 18.160e6
+
+[[preset]]
+name = "15 m emergency CoA"
+freq = 21.360e6

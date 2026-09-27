@@ -1,0 +1,60 @@
+tab = "DAB+"
+section = "Broadcast"
+mode = "dab"
+note = "Pick a multiplex to list its stations. National multiplexes are listed first; Scan checks every Band III channel for local ones."
+
+# Band III channel -> centre frequency (Hz). welle-cli tunes by channel name.
+[channels]
+"5A" = 174.928e6
+"5B" = 176.640e6
+"5C" = 178.352e6
+"5D" = 180.064e6
+"6A" = 181.936e6
+"6B" = 183.648e6
+"6C" = 185.360e6
+"6D" = 187.072e6
+"7A" = 188.928e6
+"7B" = 190.640e6
+"7C" = 192.352e6
+"7D" = 194.064e6
+"8A" = 195.936e6
+"8B" = 197.648e6
+"8C" = 199.360e6
+"8D" = 201.072e6
+"9A" = 202.928e6
+"9B" = 204.640e6
+"9C" = 206.352e6
+"9D" = 208.064e6
+"10A" = 209.936e6
+"10B" = 211.648e6
+"10C" = 213.360e6
+"10D" = 215.072e6
+"11A" = 216.928e6
+"11B" = 218.640e6
+"11C" = 220.352e6
+"11D" = 222.064e6
+"12A" = 223.936e6
+"12B" = 225.648e6
+"12C" = 227.360e6
+"12D" = 229.072e6
+"13A" = 230.784e6
+"13B" = 232.496e6
+"13C" = 234.208e6
+"13D" = 235.776e6
+"13E" = 237.488e6
+"13F" = 239.200e6
+
+[[preset]]
+name = "BBC National DAB"
+channel = "12B"
+freq = 225.648e6
+
+[[preset]]
+name = "Digital One"
+channel = "11D"
+freq = 222.064e6
+
+[[preset]]
+name = "Sound Digital"
+channel = "11A"
+freq = 216.928e6

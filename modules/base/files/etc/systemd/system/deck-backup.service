@@ -1,0 +1,16 @@
+[Unit]
+Description=deckOS: back up personal storage to the SSD at shutdown
+# Ordered before meshd so that at shutdown meshd stops first and its database is quiet.
+Before=meshd.service
+After=persist.mount deck-personal.mount local-fs.target
+RequiresMountsFor=/persist
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/bin/true
+ExecStop=/usr/bin/deck-backup now
+TimeoutStopSec=120
+
+[Install]
+WantedBy=multi-user.target

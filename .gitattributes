@@ -1,0 +1,4 @@
+# Everything in this repo runs on Linux: always LF line endings, even on Windows.
+* text=auto eol=lf
+*.png binary
+*.jpg binary

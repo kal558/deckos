@@ -1,0 +1,36 @@
+tab = "Weather fax"
+section = "DX"
+mode = "app"
+app = ["fldigi", "--wfall-only"]
+app_mode = "usb"
+# fldigi convention: dial 1.9 kHz below the published carrier
+dial_offset = -1.9e3
+note = "Opens fldigi. Choose Op Mode → WEFAX → WEFAX-IOC576. Charts are saved to Media → Weather fax."
+
+[[preset]]
+name = "Northwood (Met Office) 2618.5"
+freq = 2.6185e6
+
+[[preset]]
+name = "Northwood (Met Office) 4610"
+freq = 4.610e6
+
+[[preset]]
+name = "Northwood (Met Office) 8040"
+freq = 8.040e6
+
+[[preset]]
+name = "Northwood (Met Office) 11086.5"
+freq = 11.0865e6
+
+[[preset]]
+name = "Pinneberg (DWD) 3855"
+freq = 3.855e6
+
+[[preset]]
+name = "Pinneberg (DWD) 7880"
+freq = 7.880e6
+
+[[preset]]
+name = "Pinneberg (DWD) 13882.5"
+freq = 13.8825e6

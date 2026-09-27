@@ -1,0 +1,16 @@
+tab = "Weather satellites"
+section = "Satellites"
+mode = "satellite"
+note = "Meteor-M LRPT images via SatDump. Needs a clear view of the sky; a V-dipole or QFH antenna works far better than the telescopic one. Orbit data refreshes when you're online."
+
+[[satellite]]
+name = "METEOR-M2 3"
+norad = 57166
+freq = 137.900e6
+pipeline = "meteor_m2-x_lrpt"
+
+[[satellite]]
+name = "METEOR-M2 4"
+norad = 59051
+freq = 137.900e6
+pipeline = "meteor_m2-x_lrpt"

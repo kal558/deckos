@@ -1,0 +1,29 @@
+tab = "FM"
+section = "Broadcast"
+mode = "wbfm"
+note = "Presets are for London/South-East (Wrotham). Use Scan to find stations where you are; scanned stations are saved."
+
+[scan]
+start = 87.5e6
+end = 108.0e6
+step = 0.1e6
+
+[[preset]]
+name = "BBC Radio 2"
+freq = 89.1e6
+
+[[preset]]
+name = "BBC Radio 3"
+freq = 91.3e6
+
+[[preset]]
+name = "BBC Radio 4"
+freq = 93.5e6
+
+[[preset]]
+name = "BBC Radio 1"
+freq = 98.8e6
+
+[[preset]]
+name = "Classic FM"
+freq = 100.9e6

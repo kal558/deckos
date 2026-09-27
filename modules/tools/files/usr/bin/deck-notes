@@ -1,0 +1,10 @@
+#!/bin/sh
+# Notes live in encrypted personal storage.
+if ! mountpoint -q /persist; then
+  notify-send -u critical -a deckOS "Personal storage is locked" "Notes can't be saved until you reboot and enter your passphrase."
+  exit 1
+fi
+mkdir -p /persist/notes
+f="/persist/notes/$(date +%Y-%m-%d).md"
+[ -f "$f" ] || printf '# %s\n\n' "$(date '+%A %d %B %Y')" > "$f"
+exec mousepad "$f"

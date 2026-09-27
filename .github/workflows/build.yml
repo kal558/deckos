@@ -1,0 +1,47 @@
+name: Build deckOS image
+
+on:
+  workflow_dispatch:
+    inputs:
+      board:
+        description: "Board"
+        type: choice
+        options: [zero3w, rpi]
+        default: zero3w
+  push:
+    paths: ["src/**", "tests/unit/**", "pyproject.toml"]
+
+jobs:
+  unit-tests:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.13" }
+      - run: pip install pytest
+      - run: python -m pytest -q
+
+  image:
+    if: github.event_name == 'workflow_dispatch'
+    needs: unit-tests
+    # Native arm64 runner: no emulation, much faster Armbian builds
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 300
+    steps:
+      - uses: actions/checkout@v4
+      - name: Free disk space
+        run: sudo rm -rf /usr/local/lib/android /opt/ghc /usr/share/dotnet /opt/hostedtoolcache
+      - name: Build
+        run: ./build.sh --board "${{ inputs.board }}"
+      - name: Smoke test
+        run: |
+          sudo apt-get update && sudo apt-get install -y systemd-container
+          sudo tests/image/smoke.sh output/deckos-*.img.xz
+      - uses: actions/upload-artifact@v4
+        with:
+          name: deckos-${{ inputs.board }}
+          path: |
+            output/*.img.xz
+            output/*.sha
+            output/BUILDINFO-*.txt
+          retention-days: 14

@@ -1,0 +1,7 @@
+#!/bin/sh
+# ⊞+Esc power menu
+exec swaynag -t warning -m "deckOS power" \
+  -Z "Lock" "swaylock -f" \
+  -Z "Standby" "deck-power standby" \
+  -Z "Reboot" "systemctl reboot" \
+  -Z "Shut down" "systemctl poweroff"

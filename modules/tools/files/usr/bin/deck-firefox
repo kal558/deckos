@@ -1,0 +1,25 @@
+#!/bin/sh
+# Firefox ESR, tuned for the deck's memory. On boards under 4 GB it runs a single
+# content process with a small cache. The privacy lockdown lives in
+# /etc/firefox-esr/policies/policies.json.
+if ! nmcli -t -f STATE general 2>/dev/null | grep -q '^connected'; then
+  notify-send -a deckOS "Offline" "Wi-Fi is off. Turn it on with ⊞+E to browse."
+fi
+
+mem_kb=$(awk '/MemTotal/ {print $2}' /proc/meminfo)
+if [ "${mem_kb:-0}" -lt 3500000 ]; then
+  prefs='user_pref("dom.ipc.processCount", 1);
+user_pref("dom.ipc.processCount.webIsolated", 1);
+user_pref("fission.autostart", false);
+user_pref("browser.cache.memory.capacity", 32768);
+user_pref("browser.sessionhistory.max_total_viewers", 0);
+user_pref("browser.tabs.min_inactive_duration_before_unload", 300000);'
+else
+  prefs='user_pref("dom.ipc.processCount", 4);'
+fi
+
+# user.js is re-read at every start, so memory settings follow the board.
+for p in "$HOME"/.mozilla/firefox-esr/*.default* "$HOME"/.mozilla/firefox/*.default*; do
+  [ -d "$p" ] && printf '%s\n' "$prefs" > "$p/user.js"
+done
+exec firefox-esr "$@"

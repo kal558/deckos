@@ -1,0 +1,4 @@
+# deckOS: compressed RAM swap sized at 100% of RAM (~3 GB usable on a 2 GB board)
+ALGO=zstd
+PERCENT=100
+PRIORITY=100

@@ -1,0 +1,19 @@
+[[app]]
+id = "tv"
+name = "TV"
+icon = "video-display-symbolic"
+command = ["deck-kodi", "--tv"]
+requires = ["dvb"]
+heavy = true
+order = 35
+status = "tv"
+description = "Freeview HD live TV, guide and recording"
+
+[[app]]
+id = "tv-setup"
+name = "TV setup"
+icon = "preferences-system-symbolic"
+command = ["deck-reader", "--url", "http://127.0.0.1:9981/"]
+requires = ["dvb"]
+order = 36
+description = "Scan for Freeview channels (choose your transmitter, e.g. uk-CrystalPalace)"

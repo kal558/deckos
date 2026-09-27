@@ -1,0 +1,16 @@
+[Unit]
+Description=deckOS clock: restore last known time at boot, save it at shutdown
+DefaultDependencies=no
+After=local-fs.target persist.mount deck.mount
+Before=sysinit.target chrony.service
+Conflicts=shutdown.target
+Before=shutdown.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/bin/deck-clock restore
+ExecStop=/usr/bin/deck-clock save
+
+[Install]
+WantedBy=sysinit.target

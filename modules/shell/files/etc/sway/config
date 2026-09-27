@@ -1,0 +1,95 @@
+# deckOS sway configuration: a console, not a desktop.
+# Every app is a full-screen tab; the thin tab bar at the top lists what's open.
+
+set $mod Mod4
+font pango:JetBrains Mono 11
+
+# ---- look ----------------------------------------------------------------------
+workspace_layout tabbed
+default_border none
+default_floating_border pixel 2
+hide_edge_borders --i3 both
+titlebar_padding 8 3
+output * bg #0b0906 solid_color
+#                        border   background text     indicator child_border
+client.focused           #ffb000  #221b10    #ffb000  #ffb000   #ffb000
+client.focused_inactive  #16120b  #0b0906    #b07a00  #16120b   #16120b
+client.unfocused         #16120b  #0b0906    #6b5220  #16120b   #16120b
+client.urgent            #ff4a3d  #ff4a3d    #0b0906  #ff4a3d   #ff4a3d
+focus_follows_mouse no
+
+input type:keyboard {
+    xkb_layout gb
+    repeat_delay 300
+    repeat_rate 30
+}
+input type:touchpad {
+    tap enabled
+    natural_scroll disabled
+}
+
+# Dialogs and overlays float; everything else fills the screen
+for_window [app_id="deckos-terminal"] floating enable, resize set 85 ppt 75 ppt, move position center
+for_window [app_id="org.deckos.Prompt"] floating enable, move position center
+for_window [app_id="org.deckos.Search"] floating enable, resize set 80 ppt 80 ppt, move position center
+for_window [app_id="org.deckos.Emcon"] floating enable, resize set 70 ppt 75 ppt, move position center
+for_window [app_id="org.deckos.Cheatsheet"] floating enable, resize set 75 ppt 85 ppt, move position center
+for_window [window_role="pop-up"] floating enable
+for_window [window_role="dialog"] floating enable
+for_window [window_type="dialog"] floating enable
+
+# ---- status bar and background services ------------------------------------------
+bar {
+    swaybar_command deck-bar
+}
+exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP SWAYSOCK
+exec mako --config /etc/xdg/mako/config
+exec deck-idle
+exec deck-home
+
+# ---- keys (every ⊞ binding also has a Ctrl+Alt fallback) --------------------------
+bindsym --release Super_L exec deck-home
+bindsym $mod+h exec deck-home
+bindsym Ctrl+Mod1+space exec deck-home
+
+bindsym $mod+space exec deck-search
+bindsym Ctrl+Mod1+s exec deck-search
+
+bindsym $mod+Tab focus next
+bindsym $mod+Shift+Tab focus prev
+bindsym Mod1+Tab focus next
+bindsym Mod1+Shift+Tab focus prev
+
+bindsym $mod+q kill
+bindsym Ctrl+Mod1+q kill
+
+bindsym $mod+Escape exec deck-power-menu
+bindsym Ctrl+Mod1+Delete exec deck-power-menu
+
+bindsym $mod+e exec deck-emcon-panel
+bindsym Ctrl+Mod1+e exec deck-emcon-panel
+bindsym $mod+Shift+e exec deck-emcon silent && notify-send -u critical -a deckOS "SILENT: all transmitters off"
+bindsym Ctrl+Mod1+Shift+e exec deck-emcon silent && notify-send -u critical -a deckOS "SILENT: all transmitters off"
+
+bindsym $mod+d exec deck-theme-toggle
+bindsym Ctrl+Mod1+d exec deck-theme-toggle
+
+bindsym $mod+Return exec foot
+bindsym Ctrl+Mod1+t exec foot
+
+bindsym $mod+F1 exec deck-cheatsheet
+bindsym $mod+l exec swaylock -f
+
+bindsym $mod+f fullscreen toggle
+bindsym $mod+Shift+space floating toggle
+
+# Volume and brightness keys, if the keyboard has them
+bindsym XF86AudioRaiseVolume exec wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+
+bindsym XF86AudioLowerVolume exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-
+bindsym XF86AudioMute exec wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
+bindsym $mod+equal exec wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+
+bindsym $mod+minus exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-
+
+bindsym Print exec grim ~/screenshot-$(date +%Y%m%d-%H%M%S).png
+
+include /etc/sway/config.d/*

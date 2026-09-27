@@ -1,0 +1,7 @@
+[[app]]
+id = "selftest"
+name = "Self-test"
+icon = "emblem-ok-symbolic"
+command = ["foot", "--app-id=deckos-terminal", "--hold", "deck-selftest"]
+order = 96
+description = "Check hardware, firewall, emissions and video decoding"

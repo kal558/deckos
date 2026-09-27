@@ -1,0 +1,49 @@
+#!/bin/sh
+# deckOS read-only root.
+# Once first-boot setup has created /etc/deckos/readonly, the real root filesystem
+# is mounted read-only underneath a RAM overlay. Everything written at runtime
+# vanishes at power-off, so a dead power bank can never corrupt the system.
+# Boot with "deckos.rw=1" on the kernel command line for maintenance.
+
+PREREQ=""
+prereqs() { echo "$PREREQ"; }
+case "$1" in
+  prereqs) prereqs; exit 0 ;;
+esac
+
+. /scripts/functions
+
+grep -qw 'deckos.rw=1' /proc/cmdline && exit 0
+[ -f "${rootmnt}/etc/deckos/readonly" ] || exit 0
+
+if ! modprobe overlay 2>/dev/null && ! grep -qw overlay /proc/filesystems; then
+  log_warning_msg "deckos: overlayfs unavailable, booting read-write"
+  exit 0
+fi
+
+mkdir -p /deckos/lower /deckos/rw
+mount -o remount,ro "${rootmnt}" || true
+mount -n -o move "${rootmnt}" /deckos/lower || exit 0
+
+# Size the RAM layer at 25% of memory (512 MB on a 2 GB board)
+mount -t tmpfs -o mode=0755,size=25% deckos-rw /deckos/rw
+mkdir -p /deckos/rw/upper /deckos/rw/work
+
+if ! mount -t overlay -o lowerdir=/deckos/lower,upperdir=/deckos/rw/upper,workdir=/deckos/rw/work overlay "${rootmnt}"; then
+  log_failure_msg "deckos: overlay mount failed, booting read-write"
+  umount /deckos/rw
+  mount -n -o move /deckos/lower "${rootmnt}"
+  mount -o remount,rw "${rootmnt}"
+  exit 0
+fi
+
+mkdir -p "${rootmnt}/media/root-ro" "${rootmnt}/media/root-rw"
+mount -n -o move /deckos/lower "${rootmnt}/media/root-ro"
+mount -n -o move /deckos/rw "${rootmnt}/media/root-rw"
+
+# The root line in fstab describes the ext4 lower layer; drop it from the RAM copy
+# so systemd doesn't try to remount the overlay with ext4 options.
+if [ -f "${rootmnt}/etc/fstab" ]; then
+  sed -i -E 's@^([^#][^[:space:]]*[[:space:]]+/[[:space:]].*)$@# (deckos overlay) \1@' "${rootmnt}/etc/fstab"
+fi
+exit 0

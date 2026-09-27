@@ -1,0 +1,8 @@
+[[app]]
+id = "mesh"
+name = "Mesh"
+icon = "mail-send-receive-symbolic"
+command = ["deck-mesh"]
+order = 40
+status = "mesh"
+description = "Off-grid encrypted text messaging over Meshtastic LoRa"

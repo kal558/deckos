@@ -1,0 +1,29 @@
+tab = "MW DX"
+section = "DX"
+mode = "am"
+note = "Medium wave reaches across Europe after dark. (Long wave is below what the RTL-SDR V4 can tune.)"
+
+[scan]
+start = 531e3
+end = 1602e3
+step = 9e3
+
+[[preset]]
+name = "BBC Radio 5 Live 693"
+freq = 693e3
+
+[[preset]]
+name = "BBC Radio 5 Live 909"
+freq = 909e3
+
+[[preset]]
+name = "talkSPORT 1053"
+freq = 1053e3
+
+[[preset]]
+name = "talkSPORT 1089"
+freq = 1089e3
+
+[[preset]]
+name = "Absolute Radio 1215"
+freq = 1215e3

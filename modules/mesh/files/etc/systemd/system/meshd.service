@@ -1,0 +1,17 @@
+[Unit]
+Description=deckOS mesh daemon (Meshtastic, EMCON-enforced)
+After=persist.mount local-fs.target
+RequiresMountsFor=/run/deckos
+
+[Service]
+User=deck
+Group=deck
+SupplementaryGroups=dialout
+ExecStart=/usr/bin/meshd
+Restart=always
+RestartSec=5
+NoNewPrivileges=yes
+PrivateTmp=yes
+
+[Install]
+WantedBy=multi-user.target

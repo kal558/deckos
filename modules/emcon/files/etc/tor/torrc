@@ -1,0 +1,8 @@
+# deckOS Tor mode: transparent proxy for all traffic (see /usr/share/deckos/nft/tor-mode.nft)
+SocksPort 127.0.0.1:9050
+TransPort 127.0.0.1:9040
+DNSPort 127.0.0.1:5353
+AutomapHostsOnResolve 1
+VirtualAddrNetworkIPv4 10.192.0.0/10
+AvoidDiskWrites 1
+Log notice syslog

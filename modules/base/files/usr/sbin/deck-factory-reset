@@ -1,0 +1,50 @@
+#!/bin/bash
+# deckOS factory reset: destroys the encrypted personal storage key slots (so the
+# data is unrecoverable), removes its crypttab/fstab entries and re-runs first-boot
+# setup. The SSD library, media and games are kept; the SSD personal folder is kept
+# too unless you choose to erase it.
+set -euo pipefail
+[[ $EUID -eq 0 ]] || exec sudo "$0" "$@"
+
+echo "FACTORY RESET"
+echo "This permanently erases personal storage: messages, notes, mesh keys, bookmarks,"
+echo "saved Wi-Fi and settings. The library, maps, media and games on the SSD are kept."
+read -r -p 'Type RESET to continue: ' answer
+[[ "$answer" == "RESET" ]] || { echo "Cancelled."; exit 1; }
+
+erase_ssd=no
+if [[ -f /deck/personal.luks ]]; then
+  read -r -p 'Also erase the SSD personal folder (documents, backups)? [y/N] ' a
+  [[ "${a,,}" == y* ]] && erase_ssd=yes
+fi
+
+LOWER=/media/root-ro
+if mountpoint -q "$LOWER"; then
+  mount -o remount,rw "$LOWER"
+else
+  LOWER=/
+fi
+
+dev=$(awk '$1=="persist"{print $2}' "$LOWER/etc/crypttab" || true)
+if [[ -n "$dev" ]]; then
+  [[ "$dev" == UUID=* ]] && dev="/dev/disk/by-uuid/${dev#UUID=}"
+  umount -l /home/deck /var/lib/bluetooth /persist 2>/dev/null || true
+  cryptsetup close persist 2>/dev/null || true
+  cryptsetup erase --batch-mode "$dev"
+  wipefs -a "$dev" || true
+fi
+if [[ "$erase_ssd" == yes ]]; then
+  umount -l /deck/personal 2>/dev/null || true
+  cryptsetup close personal 2>/dev/null || true
+  cryptsetup erase --batch-mode /deck/personal.luks
+  rm -f /deck/personal.luks
+fi
+
+sed -i '/^persist /d' "$LOWER/etc/crypttab"
+sed -i '\#^/dev/mapper/persist #d' "$LOWER/etc/fstab"
+rm -f "$LOWER/etc/deckos/readonly" "$LOWER/etc/deckos/firstboot-done" "$LOWER/var/lib/deckos/persist.img"
+sync
+[[ "$LOWER" != / ]] && mount -o remount,ro "$LOWER" || true
+echo "Reset done. Rebooting into first-boot setup..."
+sleep 3
+systemctl reboot

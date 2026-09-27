@@ -1,0 +1,8 @@
+[[app]]
+id = "emcon"
+name = "Emissions"
+icon = "network-wireless-disabled-symbolic"
+command = ["deck-emcon-panel"]
+order = 90
+status = "emcon"
+description = "What the deck may transmit: Wi-Fi, Bluetooth, mesh, Tor"

@@ -1,0 +1,9 @@
+[[app]]
+id = "radio"
+name = "Radio"
+icon = "audio-x-generic-symbolic"
+command = ["deck-radio"]
+requires = ["sdr"]
+order = 30
+status = "radio"
+description = "FM, DAB+, shortwave, amateur, long-range DX, FT8, weather fax, weather satellites"

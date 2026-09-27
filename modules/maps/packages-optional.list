@@ -1,0 +1,2 @@
+# Lets the deck build its own place index from an OSM extract (slow on a 2 GB board)
+python3-pyosmium

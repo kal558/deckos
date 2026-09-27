@@ -1,0 +1,12 @@
+[Unit]
+Description=deckOS emissions control: all transmitters off at boot
+After=NetworkManager.service bluetooth.service systemd-rfkill.service
+Wants=NetworkManager.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/deck-emcon boot
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

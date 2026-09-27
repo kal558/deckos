@@ -1,0 +1,20 @@
+[Unit]
+Description=deckOS first-boot setup
+ConditionPathExists=!/etc/deckos/firstboot-done
+After=local-fs.target systemd-user-sessions.service deck.mount
+Wants=deck.mount
+Before=getty@tty1.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/deck-firstboot
+StandardInput=tty
+StandardOutput=tty
+StandardError=tty
+TTYPath=/dev/tty1
+TTYReset=yes
+TTYVHangup=yes
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

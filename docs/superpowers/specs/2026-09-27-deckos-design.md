@@ -305,6 +305,25 @@ All software is FOSS; content is openly licensed (Wikipedia CC BY-SA, OSM ODbL).
 non-free firmware: Rockchip DDR init (bootloader), Wi-Fi/BT firmware, DVB-T2 demodulator firmware,
 Pi GPU/boot firmware on Pi boards. Console BIOS files are user-supplied and not shipped.
 
+## 12a. Implementation notes (decisions made while building v0.1)
+
+- **Image tests** boot the root filesystem in `systemd-nspawn` (with qemu-user on x86) rather
+  than full-system QEMU, because the board images use board-specific boot firmware.
+- **Mesh position precision:** the "~1 km" default is 14 precision bits (~1.5 km). Choices: off, ~3 km, ~1.5 km, ~700 m, ~350 m, exact.
+- **Long wave is not available:** the RTL-SDR V4 tunes from 500 kHz. MW DX (531–1602 kHz) is included.
+- **Satellites:** NOAA APT satellites are retired, so the target is Meteor-M LRPT via SatDump.
+- **tvheadend** isn't packaged by Debian. It comes from the project's own apt repository.
+- **Optional downloads at build time** (logged to `/etc/deckos/build-warnings.txt` if they fail):
+  SDR++ (falls back to gqrx), SatDump, ES-DE (falls back to RetroArch), extra libretro cores,
+  pmtiles CLI, DVB firmware.
+- **Place search and routing data** are built on a PC with `tools/build-map-data.sh`, because
+  Valhalla tile building needs more RAM than the deck has. Map tiles download directly on the deck.
+- **App layout:** sway's tabbed layout (every app full-screen, a thin tab strip lists open apps).
+  The reader is a single WebKitGTK process shared by the library and maps, and is locked to
+  127.0.0.1 (external links are blocked and can be handed to Firefox).
+- **Standby** locks the screen (swaylock) as well as turning it off.
+- **Screen lock** also triggers one second after the screen goes idle.
+
 ## 13. Risks
 
 | Risk | Mitigation |

@@ -1,0 +1,11 @@
+[Unit]
+Description=deckOS power profiles, heat and undervoltage watchdog
+After=local-fs.target persist.mount
+
+[Service]
+ExecStart=/usr/bin/deck-power thermald
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

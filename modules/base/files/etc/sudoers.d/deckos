@@ -1,0 +1,3 @@
+# deckOS: the tools the desktop runs as root without asking for a password.
+# Everything else needs the deck password.
+deck ALL=(root) NOPASSWD: /usr/bin/deck-emcon, /usr/bin/deck-power, /usr/bin/systemctl try-restart valhalla.service

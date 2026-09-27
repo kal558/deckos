@@ -1,0 +1,8 @@
+[[app]]
+id = "maps"
+name = "Maps"
+icon = "mark-location-symbolic"
+command = ["deck-reader", "--open", "maps"]
+requires = ["ssd"]
+order = 20
+description = "Offline maps with search, routing, mesh contacts and nearby Wikipedia"

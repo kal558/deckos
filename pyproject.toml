@@ -1,0 +1,56 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "deckos"
+version = "0.1.0"
+description = "deckOS survival cyberdeck tools"
+requires-python = ">=3.11"
+license = { text = "GPL-3.0-or-later" }
+dependencies = []
+
+[project.optional-dependencies]
+# Installed into the image venv by the mesh module
+mesh = ["meshtastic>=2.5"]
+test = ["pytest>=7"]
+
+[project.scripts]
+deck-home = "deckos.ui.home:main"
+deck-search = "deckos.ui.search_ui:main"
+deck-reader = "deckos.ui.reader:main"
+deck-launch = "deckos.launch:main"
+deck-emcon = "deckos.emcon:main"
+deck-emcon-panel = "deckos.ui.emcon_panel:main"
+deck-status = "deckos.status:main"
+deck-library = "deckos.library.cli:main"
+deck-library-ui = "deckos.ui.library_app:main"
+deck-mapd = "deckos.maps.mapd:main"
+deck-mapindex = "deckos.maps.places:main"
+deck-radio = "deckos.ui.radio_app:main"
+deck-sdr-lock = "deckos.radio.sdrlock:main"
+deck-sdr-pipe = "deckos.radio.sdrpipe:main"
+deck-ft8 = "deckos.radio.ft8:main"
+deck-sat = "deckos.radio.sat:main"
+meshd = "deckos.mesh.meshd:main"
+deck-mesh = "deckos.ui.mesh_app:main"
+deck-power = "deckos.power:main"
+deck-clock = "deckos.clock:main"
+deck-backup = "deckos.backup:main"
+deck-selftest = "deckos.selftest:main"
+deck-settings = "deckos.ui.settings:main"
+deck-update = "deckos.update:main"
+deck-firstboot = "deckos.firstboot:main"
+deck-ssd-setup = "deckos.ssd:main"
+deck-cheatsheet = "deckos.ui.cheatsheet:main"
+deck-kodi = "deckos.kodi:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+deckos = ["ui/*.css", "radio/bands/*.toml", "library/catalog.toml"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests/unit"]
+pythonpath = ["src"]

@@ -1,0 +1,57 @@
+[[app]]
+id = "browser"
+name = "Browser"
+icon = "web-browser-symbolic"
+command = ["deck-firefox"]
+heavy = true
+order = 70
+description = "Firefox, hardened. Needs Wi-Fi on"
+
+[[app]]
+id = "notes"
+name = "Notes"
+icon = "accessories-text-editor-symbolic"
+command = ["deck-notes"]
+requires = ["persist"]
+order = 45
+description = "Today's notes, stored encrypted"
+
+[[app]]
+id = "files"
+name = "Files"
+icon = "system-file-manager-symbolic"
+command = ["thunar", "/deck"]
+order = 75
+description = "Browse the SSD and your documents"
+
+[[app]]
+id = "calculator"
+name = "Calculator"
+icon = "accessories-calculator-symbolic"
+command = ["qalculate-gtk"]
+order = 76
+description = "Calculator and unit converter"
+
+[[app]]
+id = "terminal"
+name = "Terminal"
+icon = "utilities-terminal-symbolic"
+command = ["foot"]
+order = 80
+description = "Command line"
+
+[[app]]
+id = "monitor"
+name = "System"
+icon = "utilities-system-monitor-symbolic"
+command = ["foot", "htop"]
+order = 81
+description = "What's using memory and CPU"
+
+[[app]]
+id = "settings"
+name = "Settings"
+icon = "preferences-system-symbolic"
+command = ["deck-settings"]
+order = 95
+description = "Radios, power, display, storage, updates"

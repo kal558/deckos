@@ -1,0 +1,45 @@
+[[app]]
+id = "wikipedia"
+name = "Wikipedia"
+icon = "accessories-dictionary-symbolic"
+command = ["deck-reader", "--open", "wikipedia"]
+requires = ["ssd"]
+order = 10
+description = "The whole of English Wikipedia, offline"
+
+[[app]]
+id = "medical"
+name = "Medical"
+icon = "emblem-important-symbolic"
+command = ["deck-reader", "--open", "medical"]
+requires = ["ssd"]
+order = 11
+description = "WikiMed, MDWiki, first aid, field medicine"
+
+[[app]]
+id = "practical"
+name = "Practical"
+icon = "applications-engineering-symbolic"
+command = ["deck-reader", "--open", "practical"]
+requires = ["ssd"]
+order = 12
+description = "Repair, water, food, building, outdoors"
+
+[[app]]
+id = "reference"
+name = "Reference"
+icon = "accessories-text-editor-symbolic"
+command = ["deck-reader", "--open", "reference"]
+requires = ["ssd"]
+order = 13
+description = "Dictionary, Q&A sites, books"
+
+[[app]]
+id = "library"
+name = "Library"
+icon = "folder-download-symbolic"
+command = ["deck-library-ui"]
+requires = ["ssd"]
+order = 60
+status = "library"
+description = "Download, update and import offline content"

@@ -1,0 +1,40 @@
+tab = "FT8"
+section = "DX"
+mode = "ft8"
+note = "Decodes weak-signal amateur beacons and plots them on the map. Which bands are busy tells you where radio is reaching right now."
+
+[[preset]]
+name = "80 m"
+freq = 3.573e6
+
+[[preset]]
+name = "60 m"
+freq = 5.357e6
+
+[[preset]]
+name = "40 m"
+freq = 7.074e6
+
+[[preset]]
+name = "30 m"
+freq = 10.136e6
+
+[[preset]]
+name = "20 m"
+freq = 14.074e6
+
+[[preset]]
+name = "17 m"
+freq = 18.100e6
+
+[[preset]]
+name = "15 m"
+freq = 21.074e6
+
+[[preset]]
+name = "12 m"
+freq = 24.915e6
+
+[[preset]]
+name = "10 m"
+freq = 28.074e6

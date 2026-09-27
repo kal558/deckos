@@ -1,0 +1,21 @@
+tab = "Amateur 2m/70cm"
+section = "Amateur"
+mode = "nfm"
+note = "Local amateur FM. Repeater frequencies depend on where you are; scan to find them."
+
+[scan]
+start = 144.0e6
+end = 146.0e6
+step = 12.5e3
+
+[[preset]]
+name = "2 m FM calling"
+freq = 145.500e6
+
+[[preset]]
+name = "70 cm FM calling"
+freq = 433.500e6
+
+[[preset]]
+name = "ISS voice downlink"
+freq = 145.800e6

@@ -1,0 +1,8 @@
+[[app]]
+id = "office"
+name = "Office"
+icon = "x-office-document-symbolic"
+command = ["libreoffice", "--nologo"]
+heavy = true
+order = 65
+description = "LibreOffice: Writer, Calc, Impress, Draw, Base, Math"

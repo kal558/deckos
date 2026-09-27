@@ -1,0 +1,6 @@
+#!/bin/sh
+# Full SDR receiver: SDR++ if installed, otherwise gqrx.
+if command -v sdrpp >/dev/null 2>&1; then
+  exec sdrpp
+fi
+exec gqrx

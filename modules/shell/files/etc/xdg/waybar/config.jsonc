@@ -1,0 +1,36 @@
+{
+  "layer": "top",
+  "position": "bottom",
+  "height": 26,
+  "spacing": 4,
+  "modules-left": ["sway/window"],
+  "modules-center": ["clock"],
+  "modules-right": ["custom/emcon", "custom/mesh", "custom/gps", "custom/ssd", "wireplumber", "custom/temp", "custom/power"],
+
+  "sway/window": { "max-length": 40 },
+  "clock": { "format": "{:%a %d %b  %H:%M}", "tooltip": false },
+
+  "custom/emcon": {
+    "exec": "deck-status bar emcon", "return-type": "json", "interval": 5, "signal": 8,
+    "on-click": "deck-emcon-panel"
+  },
+  "custom/mesh": {
+    "exec": "deck-status bar mesh", "return-type": "json", "interval": 10,
+    "on-click": "deck-launch mesh", "hide-empty-text": true
+  },
+  "custom/gps": {
+    "exec": "deck-status bar gps", "return-type": "json", "interval": 20
+  },
+  "custom/ssd": {
+    "exec": "deck-status bar ssd", "return-type": "json", "interval": 30,
+    "on-click": "deck-launch library"
+  },
+  "wireplumber": { "format": "VOL {volume}%", "format-muted": "MUTE" },
+  "custom/temp": {
+    "exec": "deck-status bar temp", "return-type": "json", "interval": 20
+  },
+  "custom/power": {
+    "exec": "deck-status bar power", "return-type": "json", "interval": 30,
+    "on-click": "deck-launch settings"
+  }
+}

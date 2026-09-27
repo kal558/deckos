@@ -1,0 +1,26 @@
+tab = "JS8Call"
+section = "DX"
+mode = "app"
+app = ["js8call"]
+app_mode = "usb"
+note = "Opens JS8Call to read keyboard-to-keyboard messages. Receive only: the deck has no transmitter connected."
+
+[[preset]]
+name = "80 m"
+freq = 3.578e6
+
+[[preset]]
+name = "40 m"
+freq = 7.078e6
+
+[[preset]]
+name = "30 m"
+freq = 10.130e6
+
+[[preset]]
+name = "20 m"
+freq = 14.078e6
+
+[[preset]]
+name = "15 m"
+freq = 21.078e6

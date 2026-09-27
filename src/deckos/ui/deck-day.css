@@ -1,0 +1,13 @@
+/* High-contrast daylight mode: black on white, loaded after deck.css. */
+@define-color deck_bg #ffffff;
+@define-color deck_panel #f0f0f0;
+@define-color deck_raised #dcdcdc;
+@define-color deck_fg #000000;
+@define-color deck_dim #303030;
+@define-color deck_muted #707070;
+@define-color deck_accent #000000;
+@define-color deck_ok #006400;
+@define-color deck_warn #8a3b00;
+@define-color deck_bad #b00000;
+
+window, .background { font-weight: 500; }

@@ -1,0 +1,91 @@
+/* deckOS night theme: amber on black. Colours are defined once here and
+   overridden by deck-day.css for the high-contrast daylight mode. */
+@define-color deck_bg #0b0906;
+@define-color deck_panel #16120b;
+@define-color deck_raised #221b10;
+@define-color deck_fg #ffb000;
+@define-color deck_dim #b07a00;
+@define-color deck_muted #6b5220;
+@define-color deck_accent #ffd060;
+@define-color deck_ok #6fdc6f;
+@define-color deck_warn #ff9040;
+@define-color deck_bad #ff4a3d;
+
+window, .background {
+  background-color: @deck_bg;
+  color: @deck_fg;
+  font-family: "JetBrains Mono", "DejaVu Sans Mono", monospace;
+}
+
+label { color: @deck_fg; }
+.dim { color: @deck_dim; }
+.muted { color: @deck_muted; }
+.title { font-size: 1.6em; font-weight: bold; letter-spacing: 0.08em; }
+.subtitle { font-size: 0.9em; color: @deck_dim; }
+.big { font-size: 2.4em; font-weight: bold; }
+
+entry, textview, textview text, spinbutton, dropdown button, combobox button {
+  background-color: @deck_panel;
+  color: @deck_fg;
+  caret-color: @deck_accent;
+  border: 1px solid @deck_muted;
+  border-radius: 2px;
+}
+entry:focus-within, textview:focus-within { border-color: @deck_fg; }
+entry.search { font-size: 1.5em; padding: 10px 14px; }
+
+button {
+  background: @deck_panel;
+  color: @deck_fg;
+  border: 1px solid @deck_muted;
+  border-radius: 2px;
+  padding: 6px 14px;
+  box-shadow: none;
+  text-shadow: none;
+}
+button:hover, button:focus-visible { border-color: @deck_fg; background: @deck_raised; }
+button:checked, button.suggested-action { background: @deck_fg; color: @deck_bg; }
+button:checked label, button.suggested-action label { color: @deck_bg; }
+button.destructive-action { border-color: @deck_bad; color: @deck_bad; }
+
+list, listview, .boxed-list { background: transparent; }
+row { padding: 6px 10px; border-bottom: 1px solid @deck_raised; }
+row:selected, row:focus-visible { background: @deck_raised; outline: 1px solid @deck_fg; }
+
+notebook > header { background: @deck_panel; }
+notebook > header tab { color: @deck_dim; padding: 4px 12px; }
+notebook > header tab:checked { color: @deck_fg; border-bottom: 2px solid @deck_fg; }
+
+stacksidebar row { padding: 10px 14px; }
+separator { background: @deck_muted; }
+scrollbar slider { background: @deck_muted; min-width: 6px; }
+
+switch { background: @deck_panel; border: 1px solid @deck_muted; }
+switch:checked { background: @deck_bad; }
+switch slider { background: @deck_fg; }
+
+/* home screen tiles */
+.tile {
+  background: @deck_panel;
+  border: 1px solid @deck_raised;
+  border-radius: 3px;
+  padding: 16px;
+  min-width: 190px;
+  min-height: 120px;
+}
+.tile:focus-visible, .tile:hover { border-color: @deck_fg; background: @deck_raised; }
+.tile .tile-name { font-size: 1.3em; font-weight: bold; }
+.tile .tile-status { font-size: 0.85em; color: @deck_dim; }
+.tile.unavailable { opacity: 0.45; }
+.tile image { color: @deck_fg; }
+
+.group-header { color: @deck_dim; font-weight: bold; margin-top: 12px; letter-spacing: 0.1em; }
+
+/* EMCON */
+.silent { color: @deck_ok; }
+.transmitting { color: @deck_bad; font-weight: bold; }
+.warning-box { border: 1px solid @deck_warn; padding: 10px; color: @deck_warn; }
+.warning-box label { color: @deck_warn; }
+
+.freq { font-size: 3em; font-weight: bold; color: @deck_accent; }
+.log { font-size: 0.85em; }
