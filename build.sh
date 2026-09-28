@@ -76,6 +76,9 @@ BUILD_MINIMAL=yes
 BUILD_DESKTOP=no
 KERNEL_CONFIGURE=no
 KERNEL_GIT=shallow
+# BTF (kernel type info for eBPF tracing) isn't used by deckOS, and linking it
+# needs more RAM than CI runners and most PCs spare.
+KERNEL_BTF=no
 COMPRESS_OUTPUTIMAGE=sha,xz
 FIXED_IMAGE_SIZE=$IMAGE_SIZE_MIB
 EXPERT=yes
