@@ -221,7 +221,7 @@ runs without its hardware.
 - **`meshd`** (Python, meshtastic library): sole owner of the node's serial port; enforces EMCON (tx_enabled, position precision, private channel); stores messages in SQLite in `/persist`; exposes a local UNIX socket API to other apps.
 - **Mesh app:** conversations (channels + DMs), node list (SNR, last heard), send waypoint from map.
 - Integrations: map layer, status bar unread count, global search.
-- Fallback: `contact` TUI client.
+- Fallback: the official `meshtastic` command-line client.
 
 ### 6.6 media
 

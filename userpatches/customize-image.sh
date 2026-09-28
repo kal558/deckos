@@ -27,7 +27,12 @@ apt-get update
 apt_install python3 python3-venv python3-pip python3-gi gir1.2-gtk-4.0
 python3 -m venv --system-site-packages /opt/deckos/venv
 /opt/deckos/venv/bin/pip install --no-cache-dir --upgrade pip
-/opt/deckos/venv/bin/pip install --no-cache-dir "$DECK_SRC"
+# pip builds in the source tree; /tmp/overlay may be read-only, so build from a copy
+rm -rf /tmp/deckos-src
+mkdir -p /tmp/deckos-src
+cp -r "$DECK_SRC/src" "$DECK_SRC/pyproject.toml" /tmp/deckos-src/
+/opt/deckos/venv/bin/pip install --no-cache-dir /tmp/deckos-src
+rm -rf /tmp/deckos-src
 
 mapfile -t MODULES < "$DECK_SRC/modules.list"
 for m in "${MODULES[@]}"; do
@@ -41,5 +46,5 @@ done
 
 apt-get -y autoremove --purge
 apt-get clean
-rm -rf /var/lib/apt/lists/* /root/.cache /tmp/overlay/deckos/src/*.egg-info
+rm -rf /var/lib/apt/lists/* /root/.cache
 log "deckOS customisation complete"

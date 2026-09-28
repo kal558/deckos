@@ -15,11 +15,17 @@ if ! apt-get install -y --no-install-recommends tvheadend 2>/dev/null; then
     gpg --dearmor < /tmp/tvh.key > /usr/share/keyrings/tvheadend.gpg
     echo "deb [signed-by=/usr/share/keyrings/tvheadend.gpg] $TVH_REPO/deb/debian $TVH_SUITE main" \
       > /etc/apt/sources.list.d/tvheadend.list
-    apt-get update
     # tvheadend's installer asks for an admin user; we run it with --noacl on localhost instead
     echo "tvheadend tvheadend/admin_username string deck" | debconf-set-selections
     echo "tvheadend tvheadend/admin_password password deck" | debconf-set-selections
-    apt-get install -y --no-install-recommends tvheadend || warn "tvheadend install failed: TV unavailable"
+    if apt-get update && apt-get install -y --no-install-recommends tvheadend; then
+      log "tvheadend installed from $TVH_REPO"
+    else
+      warn "tvheadend install failed: TV unavailable"
+      # Don't leave a broken repository behind for later apt runs
+      rm -f /etc/apt/sources.list.d/tvheadend.list
+      apt-get update || true
+    fi
   fi
 fi
 # Only runs while a tuner is plugged in (udev starts it)
