@@ -8,6 +8,11 @@ on:
         type: choice
         options: [zero3w, rpi]
         default: zero3w
+      runner:
+        description: "Build machine (ARM is faster; use x86 if ARM runners aren't available to you)"
+        type: choice
+        options: [ubuntu-24.04-arm, ubuntu-24.04]
+        default: ubuntu-24.04-arm
   push:
     paths: ["src/**", "tests/unit/**", "pyproject.toml"]
 
@@ -24,13 +29,15 @@ jobs:
   image:
     if: github.event_name == 'workflow_dispatch'
     needs: unit-tests
-    # Native arm64 runner: no emulation, much faster Armbian builds
-    runs-on: ubuntu-24.04-arm
+    # Native arm64 runner avoids emulation and builds much faster
+    runs-on: ${{ inputs.runner }}
     timeout-minutes: 300
     steps:
       - uses: actions/checkout@v4
       - name: Free disk space
-        run: sudo rm -rf /usr/local/lib/android /opt/ghc /usr/share/dotnet /opt/hostedtoolcache
+        run: |
+          sudo rm -rf /usr/local/lib/android /opt/ghc /usr/share/dotnet /opt/hostedtoolcache /usr/local/share/boost
+          df -h /
       - name: Build
         run: ./build.sh --board "${{ inputs.board }}"
       - name: Smoke test
