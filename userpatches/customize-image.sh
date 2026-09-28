@@ -3,6 +3,9 @@
 # Arguments from Armbian: $1=RELEASE $2=LINUXFAMILY $3=BOARD $4=BUILD_DESKTOP
 # Our files are at /tmp/overlay/deckos (staged by build.sh).
 set -euo pipefail
+set -E
+# Name the exact failing command in the build log (Armbian only reports "Error 1")
+trap 'echo "[deckos] FAILED: \"${BASH_COMMAND}\" at ${BASH_SOURCE[0]}:${LINENO} (module: ${DECK_CURRENT_MODULE:-none})" >&2' ERR
 
 export DEBIAN_FRONTEND=noninteractive
 export DECK_SRC=/tmp/overlay/deckos
@@ -33,7 +36,7 @@ done
 
 # Link every entry point the package declares into /usr/bin
 for exe in /opt/deckos/venv/bin/deck-* /opt/deckos/venv/bin/meshd; do
-  [[ -e "$exe" ]] && ln -sf "$exe" "/usr/bin/$(basename "$exe")"
+  if [[ -e "$exe" ]]; then ln -sf "$exe" "/usr/bin/$(basename "$exe")"; fi
 done
 
 apt-get -y autoremove --purge

@@ -44,15 +44,16 @@ ensure_dns() {
 run_module() {
   local dir="$1" name
   name="$(basename "$dir")"
+  export DECK_CURRENT_MODULE="$name"
   log "module: $name"
   ensure_dns
   if [[ -f "$dir/packages.list" ]]; then
     mapfile -t pkgs < <(grep -Ev '^\s*(#|$)' "$dir/packages.list")
-    [[ ${#pkgs[@]} -gt 0 ]] && apt_install "${pkgs[@]}"
+    if [[ ${#pkgs[@]} -gt 0 ]]; then apt_install "${pkgs[@]}"; fi
   fi
   if [[ -f "$dir/packages-optional.list" ]]; then
     mapfile -t opt < <(grep -Ev '^\s*(#|$)' "$dir/packages-optional.list")
-    [[ ${#opt[@]} -gt 0 ]] && apt_install_optional "${opt[@]}"
+    if [[ ${#opt[@]} -gt 0 ]]; then apt_install_optional "${opt[@]}"; fi
   fi
   ensure_dns
   if [[ -d "$dir/files" ]]; then
@@ -74,5 +75,10 @@ run_module() {
 }
 
 # Source the board profile so install scripts can branch on it.
-# shellcheck disable=SC1091
-[[ -f /etc/deckos/board.conf ]] && source /etc/deckos/board.conf
+# (An if-block, not `[[ ]] && source`: as the last line of a sourced file, a false
+# test would make `source` itself fail and stop a `set -e` caller.)
+if [[ -f /etc/deckos/board.conf ]]; then
+  # shellcheck disable=SC1091
+  source /etc/deckos/board.conf
+fi
+true

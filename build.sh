@@ -94,7 +94,7 @@ imgs=("$ARMBIAN_DIR"/output/images/*.img.xz)
 latest="$(ls -t "${imgs[@]}" | head -n1)"
 out="$ROOT/output/deckos-$DECK_BOARD_ID-$DECKOS_VERSION.img.xz"
 cp "$latest" "$out"
-[[ -f "$latest.sha" ]] && cp "$latest.sha" "$out.sha"
+if [[ -f "$latest.sha" ]]; then cp "$latest.sha" "$out.sha"; fi
 
 cat > "$ROOT/output/BUILDINFO-$DECK_BOARD_ID.txt" <<EOF
 deckos_version=$DECKOS_VERSION

@@ -40,6 +40,28 @@ jobs:
           df -h /
       - name: Build
         run: bash ./build.sh --board "${{ inputs.board }}"
+      - name: Show build errors
+        if: failure()
+        run: |
+          log=$(ls -t armbian/output/logs/* 2>/dev/null | head -n1 || true)
+          [ -n "$log" ] || { echo "no Armbian log found"; exit 0; }
+          echo "Log: $log"
+          case "$log" in *.zst) cat_cmd="zstdcat";; *.gz) cat_cmd="zcat";; *) cat_cmd="cat";; esac
+          $cat_cmd "$log" | sed 's/\x1b\[[0-9;]*[a-zA-Z]//g' > /tmp/build.log
+          echo "================ deckOS messages ================"
+          grep -a '\[deckos\]' /tmp/build.log | tail -n 40 || true
+          echo "================ error lines ================"
+          grep -a -n -iE '(^|[^a-z])(error|failed|unable to locate|has no installation candidate|not found|E: )' /tmp/build.log \
+            | grep -avE 'error-?handling|errors=remount|0 errors|Werror|strerror' | tail -n 60 || true
+          echo "================ last 80 lines ================"
+          tail -n 80 /tmp/build.log
+      - name: Upload build logs
+        if: failure()
+        uses: actions/upload-artifact@v5
+        with:
+          name: build-logs
+          path: armbian/output/logs/
+          retention-days: 7
       - name: Smoke test
         run: |
           sudo apt-get update && sudo apt-get install -y systemd-container
