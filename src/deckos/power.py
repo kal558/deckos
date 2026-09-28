@@ -156,7 +156,12 @@ def brownout_detected(board: board_mod.Board) -> bool:
 
 def notify_all(msg: str, urgency: str = "normal") -> None:
     # notify-send from a system service needs the user's session bus
-    uid = 1000
+    import pwd
+
+    try:
+        uid = pwd.getpwnam("deck").pw_uid
+    except KeyError:
+        return
     env = dict(os.environ, DBUS_SESSION_BUS_ADDRESS=f"unix:path=/run/user/{uid}/bus")
     subprocess.run(["runuser", "-u", "deck", "--", "notify-send", "-u", urgency, "-a", "deckOS", msg],
                    env=env, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)

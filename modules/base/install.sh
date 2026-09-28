@@ -5,10 +5,16 @@ source "$DECK_SRC/lib/common.sh"
 
 # ---- the deck user (password is set by deck-firstboot) ------------------------
 if ! id deck >/dev/null 2>&1; then
-  useradd -m -s /bin/bash -u 1000 -G sudo,audio,video,render,input,plugdev,dialout,netdev deck || \
-  useradd -m -s /bin/bash -G sudo,audio,video,render,input,plugdev,dialout deck
+  # useradd exits 9 if a "deck" group already exists and it's asked to create one
+  if getent group deck >/dev/null; then
+    useradd -m -s /bin/bash -g deck deck
+  else
+    useradd -m -s /bin/bash -U deck
+  fi
 fi
-for g in bluetooth lp; do getent group "$g" >/dev/null && usermod -aG "$g" deck; done
+for g in sudo audio video render input plugdev dialout netdev bluetooth lp; do
+  if getent group "$g" >/dev/null; then usermod -aG "$g" deck; fi
+done
 passwd -l deck
 passwd -l root
 # Armbian's interactive first-login wizard is replaced by deck-firstboot
