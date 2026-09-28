@@ -21,8 +21,8 @@ nothing personal is saved.
 1. **⊞+E** → turn on **Wi-Fi** → Settings → Radios → *Choose network…*
 2. Open **Library** → the recommended items are pre-ticked → **Download selected**.
    Downloads resume if interrupted and are checksum-verified.
-3. **Place search and routing** are built on a PC (the deck's RAM isn't enough). On the PC, run
-   `tools/build-map-data.sh uk`, then copy `places.sqlite` and `valhalla_tiles.tar` to
+3. **Place search and routing** are built on a PC (much faster than on the deck). On the PC, run
+   `tools/build-map-data.sh uk`, then copy `places.sqlite` and `routino.tar` to
    `/deck/library/staging/` and press **Import from staging folder**.
    The **PC import share** (Library app) lets you copy files over Wi-Fi: from Windows, open
    `\\<deck-ip>\deck`. It switches off at reboot.

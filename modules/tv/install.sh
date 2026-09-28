@@ -7,7 +7,7 @@ set -euo pipefail
 source "$DECK_SRC/lib/common.sh"
 
 TVH_REPO="https://dl.cloudsmith.io/public/tvheadend/tvheadend"
-TVH_SUITE="${TVH_SUITE:-bookworm}"   # their newest Debian suite; works on trixie
+TVH_SUITE="${TVH_SUITE:-trixie}"   # the repo carries arm64 builds for trixie
 
 if ! apt-get install -y --no-install-recommends tvheadend 2>/dev/null; then
   apt_install gpg

@@ -1,11 +1,11 @@
 #!/bin/bash
-# Build the deck's place-search index and offline routing tiles on a PC (the
-# deck's 2 GB of RAM isn't enough for Valhalla on a country-sized extract).
+# Build the deck's place-search index and offline routing data on a PC (it can
+# be done on the deck too, but takes many hours there).
 #
-#   tools/build-map-data.sh uk           Britain & Ireland  (~8 GB RAM, ~1-2 h)
-#   tools/build-map-data.sh europe-west  much larger        (~32 GB RAM, many hours)
+#   tools/build-map-data.sh uk           Britain & Ireland  (~4 GB RAM, ~30-60 min)
+#   tools/build-map-data.sh europe-west  much larger        (~16 GB RAM, several hours)
 #
-# Output in ./map-data/: places.sqlite and valhalla_tiles.tar. Copy both into
+# Output in ./map-data/: places.sqlite and routino.tar. Copy both into
 # /deck/library/staging/ on the SSD (or over the PC import share), then press
 # "Import from staging folder" in the Library app.
 # Needs Docker. Data: OpenStreetMap via Geofabrik (ODbL).
@@ -24,7 +24,7 @@ esac
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 OUT="$ROOT/map-data"
-mkdir -p "$OUT/pbf" "$OUT/valhalla"
+mkdir -p "$OUT/pbf"
 
 for p in "${PBFS[@]}"; do
   f="$OUT/pbf/$(basename "$p")"
@@ -33,18 +33,15 @@ for p in "${PBFS[@]}"; do
 done
 
 echo ">> Place index"
-docker run --rm -v "$ROOT:/src:ro" -v "$OUT:/out" python:3.12-slim bash -c '
+docker run --rm -v "$ROOT:/src:ro" -v "$OUT:/out" python:3.13-slim bash -c '
   pip install --quiet osmium && cd /src && PYTHONPATH=src python -m deckos.maps.places build /out/pbf/*.pbf /out/places.sqlite'
 
-echo ">> Routing tiles"
-docker run --rm -v "$OUT:/data" ghcr.io/valhalla/valhalla:latest bash -c '
-  cd /data/valhalla &&
-  valhalla_build_config --mjolnir-tile-dir /data/valhalla/tiles --mjolnir-tile-extract /data/valhalla_tiles.tar \
-    --mjolnir-admin /data/valhalla/admins.sqlite --mjolnir-timezone /data/valhalla/tz.sqlite > valhalla.json &&
-  valhalla_build_timezones > /data/valhalla/tz.sqlite &&
-  valhalla_build_admins -c valhalla.json /data/pbf/*.pbf &&
-  valhalla_build_tiles -c valhalla.json /data/pbf/*.pbf &&
-  valhalla_build_extract -c valhalla.json -v'
+echo ">> Routing data (Routino, same version as the deck: Debian trixie)"
+docker run --rm -v "$OUT:/data" debian:trixie bash -c '
+  apt-get update -qq && apt-get install -y -qq routino routino-common >/dev/null &&
+  rm -rf /data/routino && mkdir -p /data/routino &&
+  planetsplitter --dir=/data/routino --tagging=/usr/share/routino/tagging.xml /data/pbf/*.pbf &&
+  tar -C /data/routino -cf /data/routino.tar nodes.mem segments.mem ways.mem relations.mem'
 
-ls -lh "$OUT/places.sqlite" "$OUT/valhalla_tiles.tar"
-echo ">> Done. Copy map-data/places.sqlite and map-data/valhalla_tiles.tar to /deck/library/staging/"
+ls -lh "$OUT/places.sqlite" "$OUT/routino.tar"
+echo ">> Done. Copy map-data/places.sqlite and map-data/routino.tar to /deck/library/staging/"

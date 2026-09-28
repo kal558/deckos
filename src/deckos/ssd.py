@@ -19,7 +19,7 @@ LABEL = "DECKDATA"
 PERSONAL_SIZE = "16G"
 SWAP_SIZE = "2G"
 DIRS = (
-    "library/zim", "library/maps", "library/places", "library/valhalla", "library/staging",
+    "library/zim", "library/maps", "library/places", "library/routino", "library/staging",
     "media/video", "media/music", "media/photos", "media/recordings", "media/satellite", "media/wefax",
     "games/roms", "games/bios", "games/saves", "personal", ".deckos",
 )

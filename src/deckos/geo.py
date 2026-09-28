@@ -43,7 +43,7 @@ def maidenhead_to_latlon(grid: str) -> tuple[float, float]:
 
 
 def decode_polyline(encoded: str, precision: int = 6) -> list[tuple[float, float]]:
-    """Decode a Google/Valhalla encoded polyline into (lat, lon) pairs."""
+    """Decode a Google-format encoded polyline into (lat, lon) pairs."""
     coords: list[tuple[float, float]] = []
     index = lat = lon = 0
     factor = 10 ** precision

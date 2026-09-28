@@ -26,9 +26,15 @@ jobs:
       - run: pip install pytest
       - run: python -m pytest -q
 
+  preflight:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+      - run: bash tools/preflight.sh trixie arm64
+
   image:
     if: github.event_name == 'workflow_dispatch'
-    needs: unit-tests
+    needs: [unit-tests, preflight]
     # Native arm64 runner avoids emulation and builds much faster
     runs-on: ${{ inputs.runner }}
     timeout-minutes: 300

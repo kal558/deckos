@@ -250,9 +250,9 @@ default = true
 
 [[item]]
 id = "routing"
-title = "Offline routing (Valhalla tiles)"
+title = "Offline routing (Routino)"
 kind = "prebuilt"
-file = "valhalla/valhalla_tiles.tar"
+file = "routino/nodes.mem"
 group = "Maps"
-size_gb = 3
+size_gb = 2
 default = true

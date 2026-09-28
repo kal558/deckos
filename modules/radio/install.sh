@@ -1,7 +1,6 @@
 #!/bin/bash
-# radio: RTL-SDR tools from Debian, plus SDR++ and SatDump release packages when
-# they're available for this architecture (both are optional; the Radio app
-# falls back to gqrx and reports SatDump as missing).
+# radio: RTL-SDR tools (including SatDump) from Debian, plus SDR++'s release
+# package when one exists for arm64 (optional: the Radio app falls back to gqrx).
 set -euo pipefail
 source "$DECK_SRC/lib/common.sh"
 
@@ -28,8 +27,8 @@ install_release_deb() {  # repo  asset-regex  name
   rm -rf "$tmp"
 }
 
+# SatDump comes from Debian (packages.list); SDR++ isn't packaged there.
 install_release_deb "AlexandreRouma/SDRPlusPlus" "sdrpp_debian_(trixie|bookworm)_aarch64\.deb$" "SDR++"
-install_release_deb "SatDump/SatDump" "satdump.*(arm64|aarch64).*\.deb$" "SatDump"
 
 # fldigi keeps weather-fax images in ~/.fldigi/images; point that at Media
 mkdir -p /etc/skel/.fldigi

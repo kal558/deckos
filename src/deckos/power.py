@@ -24,7 +24,7 @@ from . import paths
 
 PROFILES = ("field", "normal", "performance")
 # Services stopped in Field profile (restarted when leaving it).
-FIELD_STOP = ("tvheadend.service", "deck-ft8.service", "kiwix-serve.service", "valhalla.service")
+FIELD_STOP = ("tvheadend.service", "kiwix-serve.service")
 DPMS_TIMEOUT = {"field": 60, "normal": 300, "performance": 900}
 
 

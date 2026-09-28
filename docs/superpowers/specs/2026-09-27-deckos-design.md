@@ -316,8 +316,11 @@ Pi GPU/boot firmware on Pi boards. Console BIOS files are user-supplied and not 
 - **Optional downloads at build time** (logged to `/etc/deckos/build-warnings.txt` if they fail):
   SDR++ (falls back to gqrx), SatDump, ES-DE (falls back to RetroArch), extra libretro cores,
   pmtiles CLI, DVB firmware.
-- **Place search and routing data** are built on a PC with `tools/build-map-data.sh`, because
-  Valhalla tile building needs more RAM than the deck has. Map tiles download directly on the deck.
+- **Routing uses Routino, not Valhalla.** Valhalla isn't packaged in Debian trixie; Routino is,
+  and it's lighter on a 2 GB board. deck-mapd runs `routino-router` on demand, with no background service.
+- **Place search and routing data** are built on a PC with `tools/build-map-data.sh` (much faster
+  than on the deck). Map tiles download directly on the deck.
+- **SatDump** comes from Debian trixie rather than a release download.
 - **App layout:** sway's tabbed layout (every app full-screen, a thin tab strip lists open apps).
   The reader is a single WebKitGTK process shared by the library and maps, and is locked to
   127.0.0.1 (external links are blocked and can be handed to Firefox).

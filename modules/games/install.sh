@@ -6,7 +6,7 @@ source "$DECK_SRC/lib/common.sh"
 
 CORES_DIR=/usr/lib/aarch64-linux-gnu/libretro
 BUILDBOT=https://buildbot.libretro.com/nightly/linux/aarch64/latest
-EXTRA_CORES=(pcsx_rearmed mupen64plus_next flycast fbneo dosbox_pure scummvm ppsspp picodrive)
+EXTRA_CORES=(pcsx_rearmed mupen64plus_next flycast fbneo dosbox_pure scummvm ppsspp picodrive mednafen_pce_fast)
 mkdir -p "$CORES_DIR"
 tmp=$(mktemp -d)
 for c in "${EXTRA_CORES[@]}"; do

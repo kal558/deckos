@@ -20,6 +20,7 @@ import os
 import shutil
 import subprocess
 import sys
+import tarfile
 import urllib.request
 from pathlib import Path
 
@@ -162,8 +163,24 @@ def import_staging() -> int:
             dest = store.maps_dir() / f.name
         elif f.name == "places.sqlite":
             dest = paths.library() / "places" / f.name
-        elif f.name == "valhalla_tiles.tar":
-            dest = paths.library() / "valhalla" / f.name
+        elif f.name == "routino.tar":
+            # Routing database: nodes.mem, segments.mem, ways.mem, relations.mem
+            target = paths.library() / "routino"
+            new = paths.library() / "routino.new"
+            shutil.rmtree(new, ignore_errors=True)
+            new.mkdir(parents=True)
+            with tarfile.open(f) as tar:
+                tar.extractall(new, filter="data")
+            if not (new / "nodes.mem").exists():
+                print("routino.tar doesn't contain nodes.mem; skipped")
+                shutil.rmtree(new, ignore_errors=True)
+                continue
+            shutil.rmtree(target, ignore_errors=True)
+            new.replace(target)
+            f.unlink()
+            print("imported routing data")
+            moved += 1
+            continue
         else:
             continue
         dest.parent.mkdir(parents=True, exist_ok=True)
@@ -173,8 +190,6 @@ def import_staging() -> int:
     for old in store.superseded_zims():
         old.unlink()
     store.rebuild_kiwix_library()
-    # Allowed without a password by /etc/sudoers.d/deckos
-    subprocess.run(["sudo", "-n", "/usr/bin/systemctl", "try-restart", "valhalla.service"], check=False)
     print(f"{moved} file(s) imported")
     return 0
 

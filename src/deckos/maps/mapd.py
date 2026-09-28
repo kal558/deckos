@@ -17,10 +17,10 @@ import json
 import mimetypes
 import os
 import re
+import subprocess
 import sys
 import time
 import urllib.parse
-import urllib.request
 from http import HTTPStatus
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -30,9 +30,10 @@ from ..library import catalog, store
 from . import places
 
 HOST, PORT = "127.0.0.1", 8090
-VALHALLA = "http://127.0.0.1:8002/route"
 KIWIX = "http://127.0.0.1:8080"
-MODES = {"pedestrian", "bicycle", "auto"}
+ROUTINO_SHARE = "/usr/share/routino"
+ROUTINO_TRANSPORT = {"pedestrian": "foot", "bicycle": "bicycle", "auto": "motorcar"}
+MODES = set(ROUTINO_TRANSPORT)
 RANGE_RE = re.compile(r"bytes=(\d*)-(\d*)$")
 
 
@@ -83,24 +84,59 @@ def installed_maps() -> list[dict]:
     return out
 
 
-def valhalla_route(frm: tuple[float, float], to: tuple[float, float], mode: str) -> dict:
-    body = json.dumps({
-        "locations": [{"lat": frm[0], "lon": frm[1]}, {"lat": to[0], "lon": to[1]}],
-        "costing": mode, "units": "kilometers", "directions_options": {"language": "en-GB"},
-    }).encode()
-    req = urllib.request.Request(VALHALLA, data=body, headers={"Content-Type": "application/json"})
-    with urllib.request.urlopen(req, timeout=60) as r:
-        data = json.load(r)
-    trip = data["trip"]
+def routino_dir() -> Path:
+    return paths.library() / "routino"
+
+
+def parse_routino_text_all(text: str) -> dict:
+    """Parse `routino-router --output-text-all` into a GeoJSON line plus simple steps.
+
+    Data rows are tab-separated: lat, lon, section km, section min, total km,
+    total min, point type, speed, bearing, highway name.
+    """
     coords: list[list[float]] = []
-    steps = []
-    for leg in trip["legs"]:
-        coords += [[lon, lat] for lat, lon in geo.decode_polyline(leg["shape"], 6)]
-        steps += [{"text": m.get("instruction", ""), "km": m.get("length", 0)} for m in leg.get("maneuvers", [])]
-    return {
-        "geometry": {"type": "LineString", "coordinates": coords},
-        "km": trip["summary"]["length"], "minutes": round(trip["summary"]["time"] / 60), "steps": steps,
-    }
+    rows: list[tuple[float, str]] = []  # (total km at this point, highway leading here)
+    total_km = total_min = 0.0
+    for line in text.splitlines():
+        if not line.strip() or line.lstrip().startswith("#"):
+            continue
+        f = [c.strip() for c in line.split("\t")]
+        if len(f) < 6:
+            continue
+        try:
+            lat, lon = float(f[0]), float(f[1])
+            total_km = float(f[4].split()[0])
+            total_min = float(f[5].split()[0])
+        except (ValueError, IndexError):
+            continue
+        coords.append([lon, lat])
+        rows.append((total_km, f[9] if len(f) > 9 else ""))
+    if len(coords) < 2:
+        raise ValueError("no route found")
+    steps: list[dict] = []
+    start_km = 0.0
+    for i in range(1, len(rows)):
+        name = rows[i][1] or "unnamed way"
+        last = i == len(rows) - 1
+        if last or (rows[i + 1][1] or "unnamed way") != name:
+            steps.append({"text": f"Follow {name}", "km": round(rows[i][0] - start_km, 2)})
+            start_km = rows[i][0]
+    return {"geometry": {"type": "LineString", "coordinates": coords},
+            "km": total_km, "minutes": round(total_min), "steps": steps}
+
+
+def routino_route(frm: tuple[float, float], to: tuple[float, float], mode: str) -> dict:
+    if not (routino_dir() / "nodes.mem").exists():
+        raise FileNotFoundError("routing data not installed")
+    cmd = ["routino-router", f"--dir={routino_dir()}",
+           f"--profiles={ROUTINO_SHARE}/profiles.xml", f"--translations={ROUTINO_SHARE}/translations.xml",
+           "--language=en", f"--transport={ROUTINO_TRANSPORT[mode]}", "--quickest",
+           f"--lat1={frm[0]}", f"--lon1={frm[1]}", f"--lat2={to[0]}", f"--lon2={to[1]}",
+           "--output-text-all", "--output-stdout", "--quiet"]
+    out = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
+    if out.returncode != 0:
+        raise ValueError((out.stderr or "no route found").strip().splitlines()[-1])
+    return parse_routino_text_all(out.stdout)
 
 
 def _latlon(s: str) -> tuple[float, float]:
@@ -206,9 +242,11 @@ class Handler(BaseHTTPRequestHandler):
             if mode not in MODES:
                 return self._json({"error": "bad mode"}, 400)
             try:
-                return self._json(valhalla_route(_latlon(q["from"]), _latlon(q["to"]), mode))
-            except OSError:
-                return self._json({"error": "routing unavailable (is the routing data installed?)"}, 503)
+                return self._json(routino_route(_latlon(q["from"]), _latlon(q["to"]), mode))
+            except FileNotFoundError:
+                return self._json({"error": "Routing data isn't installed (see Library → Offline routing)"}, 503)
+            except (ValueError, subprocess.TimeoutExpired) as e:
+                return self._json({"error": f"No route: {e}"}, 422)
         if name == "position":
             fix = gps.current(timeout=1.5)
             return self._json({"fix": fix.__dict__ if fix else None})

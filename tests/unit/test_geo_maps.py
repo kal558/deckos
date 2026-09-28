@@ -95,6 +95,32 @@ def test_classify_and_wiki_title():
     assert places.wiki_title({"wikipedia": "de:Berlin"}) is None
 
 
+ROUTINO_OUT = (
+    "# Creator : Routino - http://www.routino.org/\n"
+    "# Latitude\tLongitude\tSection \tSection \tTotal   \tTotal   \tPoint\tSegment\tSegment\tHighway\n"
+    "#        \t         \tDistance\tDuration\tDistance\tDuration\tType \tSpeed  \tBearing\t\n"
+    "#\n"
+    " 51.524677\t -0.127896\t0.000 km\t 0.0 min\t  0.0 km\t   0 min\tWaypt\t       \t       \t\n"
+    " 51.523830\t -0.126955\t0.114 km\t 0.2 min\t  0.1 km\t   0 min\tJunct\t 48 km/h\t 142\tEuston Road\n"
+    " 51.522900\t -0.125800\t0.130 km\t 0.3 min\t  0.2 km\t   1 min\tJunct\t 48 km/h\t 140\tEuston Road\n"
+    " 51.521000\t -0.124000\t0.250 km\t 0.5 min\t  0.5 km\t   1 min\tWaypt\t 30 km/h\t 150\tGower Street\n"
+)
+
+
+def test_parse_routino_text_all():
+    r = mapd.parse_routino_text_all(ROUTINO_OUT)
+    assert r["geometry"]["coordinates"][0] == [-0.127896, 51.524677]
+    assert len(r["geometry"]["coordinates"]) == 4
+    assert r["km"] == 0.5 and r["minutes"] == 1
+    assert [s["text"] for s in r["steps"]] == ["Follow Euston Road", "Follow Gower Street"]
+    assert sum(s["km"] for s in r["steps"]) == pytest.approx(0.5)
+
+
+def test_parse_routino_no_route():
+    with pytest.raises(ValueError):
+        mapd.parse_routino_text_all("# header only\n")
+
+
 @pytest.mark.parametrize("header,size,expected", [
     (None, 100, None),
     ("bytes=0-9", 100, (0, 9)),

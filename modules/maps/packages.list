@@ -1,1 +1,3 @@
-valhalla-bin
+# Offline routing (small and memory-friendly; data built by planetsplitter)
+routino
+routino-common
