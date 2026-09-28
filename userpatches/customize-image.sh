@@ -35,8 +35,20 @@ cp -r "$DECK_SRC/src" "$DECK_SRC/pyproject.toml" /tmp/deckos-src/
 rm -rf /tmp/deckos-src
 
 mapfile -t MODULES < "$DECK_SRC/modules.list"
+REQUIRED_MODULES=" base emcon shell "
 for m in "${MODULES[@]}"; do
-  run_module "$DECK_SRC/modules/$m"
+  if [[ "$REQUIRED_MODULES" == *" $m "* ]]; then
+    run_module "$DECK_SRC/modules/$m"
+    continue
+  fi
+  # Optional modules run in their own shell (so set -e still applies inside them).
+  # If one fails, the image is still built without that feature.
+  if ! bash -c 'set -euo pipefail; source "$DECK_SRC/lib/common.sh"; run_module "$1"' _ "$DECK_SRC/modules/$m"; then
+    warn "module '$m' FAILED and was skipped; the image is built without it"
+    dpkg --configure -a || true
+    apt-get -f install -y || true
+    rm -f "/usr/share/deckos/apps/$m.toml"
+  fi
 done
 
 # Link every entry point the package declares into /usr/bin
