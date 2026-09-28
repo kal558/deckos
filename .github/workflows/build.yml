@@ -20,8 +20,8 @@ jobs:
   unit-tests:
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
         with: { python-version: "3.13" }
       - run: pip install pytest
       - run: python -m pytest -q
@@ -33,18 +33,18 @@ jobs:
     runs-on: ${{ inputs.runner }}
     timeout-minutes: 300
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Free disk space
         run: |
           sudo rm -rf /usr/local/lib/android /opt/ghc /usr/share/dotnet /opt/hostedtoolcache /usr/local/share/boost
           df -h /
       - name: Build
-        run: ./build.sh --board "${{ inputs.board }}"
+        run: bash ./build.sh --board "${{ inputs.board }}"
       - name: Smoke test
         run: |
           sudo apt-get update && sudo apt-get install -y systemd-container
-          sudo tests/image/smoke.sh output/deckos-*.img.xz
-      - uses: actions/upload-artifact@v4
+          sudo bash tests/image/smoke.sh output/deckos-*.img.xz
+      - uses: actions/upload-artifact@v5
         with:
           name: deckos-${{ inputs.board }}
           path: |
