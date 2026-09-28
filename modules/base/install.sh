@@ -19,7 +19,9 @@ passwd -l deck
 passwd -l root
 # Armbian's interactive first-login wizard is replaced by deck-firstboot
 rm -f /root/.not_logged_in_yet
-for svc in armbian-firstrun-config armbian-resize-filesystem armbian-zram-config armbian-ramlog; do
+# fake-hwclock is replaced by deck-clock (which never moves the clock backwards)
+for svc in armbian-firstrun-config armbian-resize-filesystem armbian-zram-config armbian-ramlog \
+           fake-hwclock fake-hwclock-load fake-hwclock-save; do
   systemctl disable "$svc.service" 2>/dev/null || true
 done
 

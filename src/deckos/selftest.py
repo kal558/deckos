@@ -45,6 +45,18 @@ def non_local_listeners(ss_output: str) -> list[str]:
 
 # ---- checks: each returns (status, detail) ------------------------------------------
 
+def check_build():
+    """Features the image build had to skip (see /etc/deckos/build-warnings.txt)."""
+    try:
+        lines = [ln for ln in (paths.etc() / "build-warnings.txt").read_text().splitlines() if ln.strip()]
+    except OSError:
+        return PASS, "every feature installed"
+    skipped = [ln.split("'")[1] for ln in lines if "FAILED and was skipped" in ln and ln.count("'") >= 2]
+    if skipped:
+        return FAIL, "features missing from this image: " + ", ".join(skipped)
+    return WARN, f"{len(lines)} optional extra(s) unavailable: " + "; ".join(lines[:3])
+
+
 def check_readonly_root():
     ok = os.path.ismount("/media/root-ro")
     return (PASS, "root is a RAM overlay; power loss is safe") if ok else (WARN, "root is writable (maintenance or first boot)")
@@ -180,6 +192,7 @@ def check_maps():
 
 
 CHECKS: list[tuple[str, Callable, bool]] = [
+    ("Image build", check_build, False),
     ("Read-only root", check_readonly_root, False),
     ("Personal storage", check_persist, False),
     ("SSD", check_ssd, False),
